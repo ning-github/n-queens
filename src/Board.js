@@ -84,7 +84,7 @@
       for (var i = 0; i < thisRow.length; i++) {
         if(thisRow[i] === 1) {
           counter++;
-          if (counter < 1) {
+          if (counter > 1) {
             return true;
           }
         }
@@ -111,15 +111,14 @@
     hasColConflictAt: function(colIndex) {
       var thisColumn = _.pluck(this.rows(), colIndex);
       var counter = 0;
-      _.each(thisColumn, function(item) {
-        if (item === 1) {
-          counter ++;
+      for (var i = 0; i < thisColumn.length; i++) {
+        if(thisColumn[i] === 1) {
+          counter++;
+          if (counter > 1) {
+            return true;
+          }
         }
-
-        if (counter > 1) {
-          return true;
-        }
-      });
+      }
 
       return false;
     },
