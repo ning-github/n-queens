@@ -158,13 +158,17 @@
           }
         }
       }
-      return !!(counter>1); // fixme
+      return !!(counter>1);
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-
-      return false; // fixme
+      for (var i = -this.rows().length + 1; i < this.rows().length; i++) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
