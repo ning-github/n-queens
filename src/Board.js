@@ -99,7 +99,7 @@
           return true;
         }
       }
-      return false; 
+      return false;
     },
 
 
@@ -140,11 +140,30 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var counter = 0;
+      // for(var i =0; i<this.rows().length; i++){
+      //   var row = _.map(this.rows()[i], function(item, colInd){
+      //     return colInd-i;
+      //   });
+      //   majDiagArray.push(row);
+      // }
+      for(var j = 0; j < this.rows().length; j++){
+        for(var k =0; k <this.rows().length; k++){
+          var diagIndex = this._getFirstRowColumnIndexForMajorDiagonalOn(j,k);
+          // only if the current diagonal index matches that entered as search argument
+          if (diagIndex === majorDiagonalColumnIndexAtFirstRow){
+            if(this.rows()[j][k] === 1){
+              counter++;
+            }
+          }
+        }
+      }
+      return !!(counter>1); // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+
       return false; // fixme
     },
 
