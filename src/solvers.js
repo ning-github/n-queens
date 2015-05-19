@@ -132,7 +132,7 @@ window.findNQueensSolution = function(n) {
   solution = allSolutions[0];
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return allSolutions[0];
+  return allSolutions[0] || {n:n};
 };
 
 
