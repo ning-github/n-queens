@@ -46,6 +46,7 @@ window.findNRooksSolution = function(n) {
 window.countNRooksSolutions = function(n) {
   var solutionCount = 0;
 
+  //function to recursively seed rooks in decision tree and sub-trees
   var innerFunction = function(board, rowCounter){
     if (rowCounter === n){
       solutionCount++;
@@ -59,14 +60,16 @@ window.countNRooksSolutions = function(n) {
         // if there would be conflict, this won't be a starting point
         continue;
       }
-
       innerFunction(board, rowCounter+1);
       board.togglePiece(rowCounter, col);
     }
   };
 
+  var solution = new Board({n:n});  // not declared in a function, so each iteration still works on the same solution board
+  innerFunction(solution, 0);
+
+/*
   for(var i =0; i<n; i++){
-    // solutionCount++;
     // n starting points
     var solution = new Board({n:n});  // not declared in a function, so each iteration still works on the same solution board
     solution.togglePiece(0, i);
@@ -76,7 +79,7 @@ window.countNRooksSolutions = function(n) {
     //untoggle so that each iteration and sub-iteration (in innerFunction) can be unpolluted
     solution.togglePiece(0,i);
   }
-
+*/
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
