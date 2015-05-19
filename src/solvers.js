@@ -88,8 +88,9 @@ window.countNRooksSolutions = function(n) {
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-window.findNQueensSolution = function(n) {
+window.returnAllNQueensSolutions = function(n) {
   var allSolutions = [];
+  // matrixes don't copy directly, so need a helper function
   var matrixCopy = function(matrix){
     var result = [];
     for (var i = 0; i < matrix.length; i++){
@@ -108,7 +109,7 @@ window.findNQueensSolution = function(n) {
       return;
     }
     for (var col = 0; col < n; col++){
-      // place rook on board then check if there's conflict
+      // place queen on board then check if there's conflict
       board.togglePiece(rowCounter, col);
       // if (!board.hasAnyQueenConflictsOn(rowCounter, col)) {
       //   innerFunction(board, rowCounter + 1);
@@ -129,16 +130,20 @@ window.findNQueensSolution = function(n) {
   var solution = new Board({n:n});  // not declared in a function, so each iteration still works on the same solution board
   innerFunction(solution, 0);
 
-  solution = allSolutions[0];
+  return allSolutions;
+};
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+window.findNQueensSolution = function(n) {
+
+  var allSolutions = returnAllNQueensSolutions(n);
+
+  console.log('Single solution for ' + n + ' queens:', JSON.stringify(allSolutions[0]));
   return allSolutions[0] || {n:n};
 };
 
-
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = returnAllNQueensSolutions(n).length; //fixme
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
