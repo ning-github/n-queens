@@ -1,3 +1,4 @@
+
 /*           _
    ___  ___ | |_   _____ _ __ ___
   / __|/ _ \| \ \ / / _ \ '__/ __|
@@ -88,10 +89,50 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  var allSolutions = [];
+  var matrixCopy = function(matrix){
+    var result = [];
+    for (var i = 0; i < matrix.length; i++){
+      var copy = matrix[i].slice();
+      result[i] = copy;
+    }
+    return result;
+  }
+
+  //function to recursively seed rooks in decision tree and sub-trees
+  var innerFunction = function(board, rowCounter){
+    if (rowCounter === n){
+      var boardArray = board.rows();
+      var copy = matrixCopy(boardArray);
+      allSolutions.push(copy);
+      return;
+    }
+    for (var col = 0; col < n; col++){
+      // place rook on board then check if there's conflict
+      board.togglePiece(rowCounter, col);
+      // if (!board.hasAnyQueenConflictsOn(rowCounter, col)) {
+      //   innerFunction(board, rowCounter + 1);
+      // }
+
+      // board.togglePiece(rowCounter, col);
+
+      if (board.hasAnyQueenConflictsOn(rowCounter, col)){
+        board.togglePiece(rowCounter, col);
+        // if there would be conflict, this won't be a starting point
+        continue;
+      }
+      innerFunction(board, rowCounter+1);
+      board.togglePiece(rowCounter, col);
+    }
+  };
+
+  var solution = new Board({n:n});  // not declared in a function, so each iteration still works on the same solution board
+  innerFunction(solution, 0);
+
+  solution = allSolutions[0];
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  return allSolutions[0];
 };
 
 
