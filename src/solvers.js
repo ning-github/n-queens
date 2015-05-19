@@ -59,38 +59,71 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  if (n = 1) {
-    debugger;
-    return 1;
-  }
-
+  // if (n = 1) {
+  //   debugger;
+  //   return 1;
+  // }
+  if (n === 3) {debugger;}
   var solutionCount = 0;
 
-  var solution = new Board({n:n});
+  // var solution = new Board({n:n});
 
-  var innerFunction = function(rowCounter){
-    for(var col = 0; col < n; col++){
-        // if(rowCounter === n){
-        //   return;
-        // }
-      solution.togglePiece(rowCounter, col);
-      // note - come back to this
-      if (solution.hasAnyRooksConflicts()){
-        solution.togglePiece(rowCounter, col);
-        continue;
-      }
+  // var innerFunction = function(rowCounter){
+  //   for(var col = 0; col < n; col++){
+  //       // if(rowCounter === n){
+  //       //   return;
+  //       // }
+  //     solution.togglePiece(rowCounter, col);
+  //     // note - come back to this
+  //     if (solution.hasAnyRooksConflicts()){
+  //       solution.togglePiece(rowCounter, col);
+  //       continue;
+  //     }
 
-    if (rowCounter + 1 === n) {
-      debugger;
+  //   if (rowCounter + 1 === n) {
+  //     debugger;
+  //     solutionCount++;
+  //     return;
+  //   }
+
+  //   innerFunction(rowCounter + 1);
+
+  //   }
+  // };
+  // innerFunction(0);
+
+  var innerFunction = function(board, rowCounter){
+    if (rowCounter === n){
       solutionCount++;
       return;
     }
+    for (var col = 0; col < n; col++ ){
+      // a new board created from the history of the toggle that made it
+      var nextBoard = new Board(board.rows());
+      // check for where new starting points are eligible based on old board
+      board.togglePiece(rowCounter, col);
+      if (board.hasAnyRooksConflicts()){
+        board.togglePiece(rowCounter, col);
+        // if there would be conflict, this won't be a starting point
+        continue;
+      }
+      //either way, don't change the old board (the above was just to check)
+      board.togglePiece(rowCounter, col);
+      nextBoard.togglePiece(rowCounter, col);
 
-    innerFunction(rowCounter + 1);
-
+      innerFunction(nextBoard, rowCounter+1);
     }
   };
-  innerFunction(0);
+
+  for(var i =0; i<n; i++){
+    // solutionCount++;
+    // n starting points
+    var solution = new Board({n:n});
+    solution.togglePiece(0, i);
+    // move to the next row
+    rowCounter = 1;
+    innerFunction(solution, 1);
+  }
 
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
