@@ -63,7 +63,7 @@ window.countNRooksSolutions = function(n) {
   //   debugger;
   //   return 1;
   // }
-  if (n === 3) {debugger;}
+  // if (n === 3) {debugger;}
   var solutionCount = 0;
 
   // var solution = new Board({n:n});
@@ -112,17 +112,19 @@ window.countNRooksSolutions = function(n) {
       nextBoard.togglePiece(rowCounter, col);
 
       innerFunction(nextBoard, rowCounter+1);
+      nextBoard.togglePiece(rowCounter, col);
     }
   };
 
   for(var i =0; i<n; i++){
     // solutionCount++;
     // n starting points
-    var solution = new Board({n:n});
+    var solution = new Board({n:n});  // not declared in a function, so each iteration still works on the same solution board
     solution.togglePiece(0, i);
     // move to the next row
-    rowCounter = 1;
+    // rowCounter = 1;
     innerFunction(solution, 1);
+    solution.togglePiece(0,i);
   }
 
 
